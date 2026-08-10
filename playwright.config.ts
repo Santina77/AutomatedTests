@@ -1,12 +1,8 @@
 import 'dotenv/config';
 import { defineConfig, devices } from '@playwright/test';
 
-const BASE_URL = process.env.BASE_URL;
-const API_KEY = process.env.API_KEY;
-
-if (!BASE_URL) {
-  throw new Error('BASE_URL is not set. Copy .env.example to .env and fill in the values.');
-}
+const PORT = process.env.PORT ?? '3000';
+const BASE_URL = process.env.BASE_URL ?? `http://localhost:${PORT}`;
 
 export default defineConfig({
   testDir: './tests',
@@ -16,11 +12,16 @@ export default defineConfig({
   workers: process.env.CI ? 2 : undefined,
   reporter: [['html', { open: 'never' }], ['list']],
 
+  webServer: {
+    command: 'node app/server.js',
+    url: BASE_URL,
+    reuseExistingServer: !process.env.CI,
+    timeout: 30_000,
+    env: { PORT },
+  },
+
   use: {
     baseURL: BASE_URL,
-    extraHTTPHeaders: {
-      'X-API-Key': API_KEY ?? '',
-    },
     trace: 'on-first-retry',
   },
 

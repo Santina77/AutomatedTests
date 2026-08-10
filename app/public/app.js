@@ -1,0 +1,72 @@
+const form = document.getElementById('product-form');
+const errorEl = document.getElementById('form-error');
+const listEl = document.getElementById('product-list');
+
+function renderProducts(products) {
+  listEl.innerHTML = '';
+
+  if (products.length === 0) {
+    const row = document.createElement('tr');
+    row.dataset.testid = 'empty-state';
+    row.innerHTML = '<td colspan="5">No products yet.</td>';
+    listEl.appendChild(row);
+    return;
+  }
+
+  for (const product of products) {
+    const row = document.createElement('tr');
+    row.dataset.testid = 'product-row';
+    row.dataset.productId = product.id;
+    row.innerHTML = `
+      <td data-testid="product-name">${product.name}</td>
+      <td data-testid="product-price">${product.price.toFixed(2)}</td>
+      <td data-testid="product-category">${product.category}</td>
+      <td data-testid="product-in-stock">${product.in_stock ? 'Yes' : 'No'}</td>
+      <td><button type="button" class="delete-button" data-testid="delete-button">Delete</button></td>
+    `;
+    row.querySelector('.delete-button').addEventListener('click', () => deleteProduct(product.id));
+    listEl.appendChild(row);
+  }
+}
+
+async function loadProducts() {
+  const response = await fetch('/api/products');
+  const body = await response.json();
+  renderProducts(body.products);
+}
+
+async function deleteProduct(id) {
+  await fetch(`/api/products/${id}`, { method: 'DELETE' });
+  await loadProducts();
+}
+
+form.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  errorEl.textContent = '';
+
+  const formData = new FormData(form);
+  const payload = {
+    name: formData.get('name'),
+    price: Number(formData.get('price')),
+    category: formData.get('category'),
+    in_stock: formData.get('in_stock') === 'on',
+  };
+
+  const response = await fetch('/api/products', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    const body = await response.json();
+    errorEl.textContent = body.error;
+    return;
+  }
+
+  form.reset();
+  form.querySelector('#in-stock-input').checked = true;
+  await loadProducts();
+});
+
+loadProducts();

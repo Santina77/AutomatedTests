@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Product Manager</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main>
+    <h1>Product Manager</h1>
+
+    <form id="product-form" data-testid="product-form" novalidate>
+      <div class="field">
+        <label for="name-input">Name</label>
+        <input id="name-input" name="name" type="text" data-testid="name-input" />
+      </div>
+      <div class="field">
+        <label for="price-input">Price</label>
+        <input id="price-input" name="price" type="number" step="0.01" data-testid="price-input" />
+      </div>
+      <div class="field">
+        <label for="category-input">Category</label>
+        <input id="category-input" name="category" type="text" data-testid="category-input" />
+      </div>
+      <div class="field field-checkbox">
+        <label for="in-stock-input">
+          <input id="in-stock-input" name="in_stock" type="checkbox" data-testid="in-stock-input" checked />
+          In stock
+        </label>
+      </div>
+      <button type="submit" data-testid="add-product-button">Add Product</button>
+      <p id="form-error" data-testid="form-error" role="alert"></p>
+    </form>
+
+    <table data-testid="product-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Price</th>
+          <th>Category</th>
+          <th>In stock</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="product-list" data-testid="product-list">
+        <tr data-testid="empty-state">
+          <td colspan="5">No products yet.</td>
+        </tr>
+      </tbody>
+    </table>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

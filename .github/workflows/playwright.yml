@@ -25,10 +25,6 @@ jobs:
 
       - name: Run Playwright tests
         run: npx playwright test
-        env:
-          BASE_URL: https://reqres.in
-          PROJECT_ID: "44152"
-          API_KEY: ${{ secrets.API_KEY }}
 
       - name: Upload HTML report
         if: always()

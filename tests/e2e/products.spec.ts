@@ -10,6 +10,11 @@ function uniqueWord(label: string) {
 }
 
 test.describe('Product manager UI', () => {
+  test('shows the "Product Manager" heading', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('h1')).toHaveText('Product Manager');
+  });
+
   test('adds a product and shows it in the table', async ({ page }) => {
     await page.goto('/');
 

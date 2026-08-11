@@ -20,7 +20,13 @@
       </div>
       <div class="field">
         <label for="category-input">Category</label>
-        <input id="category-input" name="category" type="text" data-testid="category-input" />
+        <input
+          id="category-input"
+          name="category"
+          type="text"
+          placeholder="OneWordOnly"
+          data-testid="category-input"
+        />
       </div>
       <div class="field field-checkbox">
         <label for="in-stock-input">
@@ -28,7 +34,8 @@
           In stock
         </label>
       </div>
-      <button type="submit" data-testid="add-product-button">Add Product</button>
+      <button id="submit-button" type="submit" data-testid="add-product-button">Add Product</button>
+      <button id="cancel-button" type="button" class="secondary-button" data-testid="cancel-button">Cancel</button>
       <p id="form-error" data-testid="form-error" role="alert"></p>
     </form>
 
@@ -36,7 +43,9 @@
       <thead>
         <tr>
           <th>Name</th>
-          <th>Price</th>
+          <th aria-sort="none">
+            <button id="price-header" type="button" class="sort-button" data-testid="price-header">Price</button>
+          </th>
           <th>Category</th>
           <th>In stock</th>
           <th></th>

@@ -21,6 +21,8 @@ function validateProduct(body) {
   }
   if (!body || typeof body.category !== 'string' || body.category.trim() === '') {
     errors.push('category is required');
+  } else if (!/^[A-Za-z0-9]+$/.test(body.category.trim())) {
+    errors.push('category must be a single word with no spaces, commas, or punctuation');
   }
   if (!body || typeof body.in_stock !== 'boolean') {
     errors.push('in_stock must be a boolean');
@@ -56,6 +58,26 @@ app.post('/api/products', (req, res) => {
   };
   products.push(product);
   res.status(201).json({ product });
+});
+
+app.put('/api/products/:id', (req, res) => {
+  const product = products.find((p) => p.id === req.params.id);
+  if (!product) {
+    return res.status(404).json({ error: 'Product not found' });
+  }
+
+  const errors = validateProduct(req.body);
+  if (errors.length > 0) {
+    return res.status(400).json({ error: errors.join(', ') });
+  }
+
+  product.name = req.body.name.trim();
+  product.price = req.body.price;
+  product.category = req.body.category.trim();
+  product.in_stock = req.body.in_stock;
+  product.updated_at = new Date().toISOString();
+
+  res.status(200).json({ product });
 });
 
 app.delete('/api/products/:id', (req, res) => {

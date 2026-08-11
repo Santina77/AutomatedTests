@@ -22,7 +22,7 @@ test.describe('Product manager UI', () => {
     const row = page.getByTestId('product-row').filter({ hasText: name });
     await expect(row).toBeVisible();
     await expect(row.getByTestId('product-price')).toHaveText('47.95');
-    await expect(row.getByTestId('product-category')).toHaveText('LawnGarden');
+    await expect(row.getByTestId('product-category')).toHaveText('LawnGardenIBrokeOnPurpose');
     await expect(row.getByTestId('product-in-stock')).toHaveText('Yes');
 
     // Clean up so the shared in-memory store doesn't accumulate test data.
